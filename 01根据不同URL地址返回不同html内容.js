@@ -8,12 +8,16 @@ server.on('request',(req,res)=>{
     })
     const url = req.url;
     const method = req.method.toLowerCase();
-    if(method === 'get' && url === '/index.html'){
-        fs.readFile(path.join(__dirname,'/demo/index.html'),'utf-8',(err,data)=>{
-          if(err) return res.end('404');
-          res.end(data)
-        })
-    }
+    // if(method === 'get' && url === '/demo/index.html'){
+    //     readHtmlFile(res,url)
+    // }
+    // if(method === 'get' && url === '/demo/movie.html'){
+    //     readHtmlFile(res,url)
+    // }
+    // if(method === 'get' && url === '/demo/about.html'){
+        readHtmlFile(res,url)
+       
+    // }
     // if(url === '/movie.html'){
     //     res.end("<h3>电影</h3>")
     // }
@@ -26,3 +30,11 @@ server.on('request',(req,res)=>{
 server.listen(3000,()=>{
     console.log('服务器已经启动...')
 })
+
+function readHtmlFile(res,url){
+    fs.readFile(path.join(__dirname,url),'utf-8',(err,data)=>{
+        console.log(err)
+        if(err) return res.end('404');
+        res.end(data)
+      })
+}

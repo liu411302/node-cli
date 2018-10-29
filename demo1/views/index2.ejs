@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,9 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-    <link rel="stylesheet" href="1.css">
 </head>
 <body>
-    <h3>首页2</h3>
+    <h1>ejs动态页面</h1>
+    <h3>姓名:<%= name %></h3>
+    <h3>年龄:<%= age %></h3>
+    <h3>性别:<%= gender %></h3>
+    <br>
+    <% hobby.forEach(item=>{ %>
+       <h3><%= item %></h3>
+    <% }) %>
 </body>
 </html>
