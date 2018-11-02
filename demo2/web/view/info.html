@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <script src="/node_modules/jquery/dist/jquery.js"></script>
+    <script src="/node_modules/axios/dist/axios.min.js"></script>
+    <script src="/node_modules/art-template/lib/template-web.js"></script>
+</head>
+<body>
+        <script id="tmpl" type="text/template">
+          {{ each message}}
+            <div>姓名:{{$value.name}}</div>
+            <div>性别:{{$value.gender}}</div>
+            <div>创建时间:{{$value.ctime}}</div>
+          {{ /each }}
+        </script>
+   <div class="container">
+    <h1>王者农药<small>英雄查看器</small></h1>
+    <hr>
+    <div id="box"></div>
+   </div>
+    <script>
+        // new URLSearchParams
+        console.log(location)
+        const url =new URLSearchParams(location.search).get('id')
+        console.log(url)
+      axios.get('http://127.0.0.1:5000/api/gethero?id='+ url).then(res=>{
+         console.log(res)  
+         if(res.status === 200 && res.data.err_code === 0){
+            const htmlstr = template('tmpl',res.data)
+            $('#box').html(htmlstr)
+         }else{
+             alert('请求数据失败!')
+         }
+      }).catch((err)=>{
+
+      })
+    </script>
+</body>
+</html>

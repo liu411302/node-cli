@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <script src="/node_modules/jquery/dist/jquery.js"></script>
+    <script src="/node_modules/axios/dist/axios.min.js"></script>
+    <script src="/node_modules/art-template/lib/template-web.js"></script>
+</head>
+
+<body>
+    <script id="tmpl" type="text/template">
+        <div class="form-group">
+                <label>名称:</label>
+                <input type="text" name="name" class="form-control" value='{{name}}'>
+            </div>
+            <div class="form-group">
+                <label>性别:</label>
+                <label for=""><input type="radio" {{ gender == '男' ? 'checked' : ''}} name="gender" value="男">男</label>
+                <label for=""><input type="radio" {{ gender == '女' ? 'checked' : ''}} name="gender" value="女">女</label>
+                <label for=""><input type="radio" {{ gender == '妖' ? 'checked' : ''}} name="gender" value="妖">妖</label>
+            </div>
+            <input type="submit" value="编辑新英雄" class="btn btn-primary">    
+    </script>
+    <div class="container">
+        <h1>王者农药<small>英雄编辑器</small></h1>
+        <hr>
+        <div class="clearfix">
+            <a href="/add.html" class="btn btn-success float-right mb-3">添加英雄</a>
+        </div>
+        <form id="form">
+
+        </form>
+    </div>
+    <script>
+        const id = new URLSearchParams(location.search).get('id')
+        axios.get('http://127.0.0.1:5000/api/gethero?id=' + id).then(res => {
+            console.log(res.data.message)
+            if (res.status === 200 && res.data.err_code === 0) {
+
+                const htmlstr = template('tmpl', res.data.message)
+                $('#form').html(htmlstr)
+                // $(':input[name=name]').val('res.')
+            } else {
+                alert('请求数据失败!')
+            }
+        }).catch((err) => {
+
+        })    
+        $('#form').on('submit', function (e) {
+            e.preventDefault();
+            axios.post('http://127.0.0.1:5000/api/updatheros',{
+                id:id,
+                name: $(':input[name=name]').val(),
+                gender: $(':input[name=gender]:checked').val()
+            }).then(res => {
+                console.log(res)
+                if (res.status === 200 && res.data.err_code === 0) {
+                    location.href="/index.html"  
+                } else {
+                    alert('请求数据失败!')
+                }
+            }).catch((err) => {
+
+            })
+        })
+    </script>
+</body>
+
+</html>

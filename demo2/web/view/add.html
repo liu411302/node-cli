@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <script src="/node_modules/jquery/dist/jquery.js"></script>
+    <script src="/node_modules/axios/dist/axios.min.js"></script>
+    <script src="/node_modules/art-template/lib/template-web.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <h1> <a href="/index.html">王者农药</a> <small>英雄添加</small></h1>
+        <hr>
+        <form id="form">
+            <div class="form-group">
+                <label>名称:</label>
+                <input type="text" name="name" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>性别:</label>
+                <label for=""><input type="radio" checked name="gender" value="男">男</label>
+                <label for=""><input type="radio" name="gender" value="女">女</label>
+            </div>
+            <input type="submit" value="添加新英雄" class="btn btn-primary">
+        </form>
+    </div>
+    <script>
+        $('#form').on('submit', function (e) {
+            // {
+            //     name: $(':input[name=name]').val(),
+            //     gender: $(':input[name=gender]:checked').val()
+            // }
+            // 此处post提交数据 可以是对象形式 也可以为直接获取数据拼接字符串模式
+            e.preventDefault();
+            axios.post('http://127.0.0.1:5000/api/addhero', $('#form').serialize()).then(res=>{
+                console.log(res)
+                if(res.status === 200 && res.data.err_code === 0){
+                    console.log(res.data.message);
+                    location.href='/index.html'
+                }else{
+                    alert('添加数据失败 ')
+                }
+            })
+        })
+    </script>
+</body>
+
+</html>
